@@ -1,0 +1,14 @@
+<Context>
+
+<!-- This is used to store connection to database. update databasename,  username and password for postgres user  -->
+
+  <Resource name="jdbc/tmdb-sql" 
+  			auth="Container" type="javax.sql.DataSource"
+            maxActive="20" maxIdle="5" maxWait="10000"
+            username="????" password="?????" 
+            driverClassName="org.postgresql.Driver"
+            url="jdbc:postgresql://localhost:5432/databasenamehere?useSSL=false">
+  </Resource>
+     
+
+</Context>
