@@ -19,11 +19,13 @@ public class API_Parser {
 
 		OkHttpClient client = new OkHttpClient();
 
+		String API_Key = "eecc8ae5b1c378032fe7a8ca2ce11da9";
+
 		MediaType mediaType = MediaType.parse("application/octet-stream");
 		RequestBody body = RequestBody.create(mediaType, "{}");
-		Request request = new Request.Builder().url(
-				"https://api.themoviedb.org/3/movie/popular?api_key=eecc8ae5b1c378032fe7a8ca2ce11da9&language=en-US&page=1")
-				.get().build();
+		Request request = new Request.Builder()
+				.url("https://api.themoviedb.org/3/movie/popular?api_key=" + API_Key + "&language=en-US&page=1").get()
+				.build();
 
 		try {
 			Response response = client.newCall(request).execute();
@@ -36,6 +38,15 @@ public class API_Parser {
 
 			// Prints the full path to the hero image.
 			System.out.println(movie_Info_Retriever.get_Hero_Image(moviesArray));
+
+			// Returns a list of the most popular movie titles from TMDB.
+			for (String string : movie_Info_Retriever.get_Movie_Titles(moviesArray)) {
+				System.out.println(string);
+			}
+			// Returns a list of the most popular movie titles thumbnails from TMDB.
+			for (String string : movie_Info_Retriever.get_Movie_Thumb(moviesArray)) {
+				System.out.println(string);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
