@@ -7,19 +7,25 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Get_Movies {
-	
-	// Returns a list of the most popular movie titles from TMDB.
-		public List<String> get_Movie_Titles(JSONArray movies) {
 
-			List<String> popularTitles = new ArrayList<>();
+	/**
+	 * Return list of movies
+	 * 
+	 * @param movies
+	 *         JSSONArray
+	 * @return
+	 *         List<String>
+	 */
+	public List<String> get_Movie_Titles(JSONArray movies) {
 
-			for (int i = 0; i < movies.length(); i++) {
-				JSONObject product = movies.getJSONObject(i);
-				popularTitles.add(product.getString("title"));
-			}
+		List<String> movieTitles = new ArrayList<>();
 
-			return popularTitles;
+		for (int i = 0; i < movies.length(); i++) {
+			JSONObject product = movies.getJSONObject(i);
+			movieTitles.add(product.getString("title"));
 		}
 
+		return movieTitles;
+	}
 
 }
