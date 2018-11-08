@@ -1,6 +1,8 @@
 package api_logic;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,6 +16,8 @@ import okhttp3.Response;
 public class API_Parser {
 
 	public static void main(String[] args) {
+
+		List<Movie> movie_List = new ArrayList<>();
 
 		TMDB_Movie_Info_Retrieval movie_Info_Retriever = new TMDB_Movie_Info_Retrieval();
 
@@ -35,6 +39,10 @@ public class API_Parser {
 
 			// The array for all the popular movies on page 1.
 			JSONArray moviesArray = jsonObject.getJSONArray("results");
+
+			for (Object object : moviesArray) {
+				movie_List.add(new Movie(Id, hero_Image, movie_Name, movie_Thumbnail, year_Released));
+			}
 
 			// Prints the full path to the hero image.
 			System.out.println(movie_Info_Retriever.get_Hero_Image(moviesArray));
