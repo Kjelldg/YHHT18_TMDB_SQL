@@ -12,16 +12,15 @@ Make your selections and enjoy that sweet sql in action
 <div align="left" id="movieOrSeries">
 	<select name="media">
 		<option value="movie">Movies</option>
-		<option value="series">Series</option>
-		<option value="both">Both</option>
 	</select>
 </div>
 <br/>
 <div align=left id="sorting">
-	<select name="sort">
-		<option value="top_rated">Top rated</option>
-		<option value="popular">Popular</option>
-		<option value="upcoming">Upcoming</option>
+	<select name="genre">
+		<option value="thriller">Thriller</option>
+		<option value="comedy">Comedy</option>
+		<option value="drama">Drama</option>
+		<option value="sci-fi">Sci-fi</option>
 	</select>
 </div>
 <br/>

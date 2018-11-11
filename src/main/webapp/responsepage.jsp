@@ -9,14 +9,14 @@
 <body>
 
 
-</br>
-<h2>Showing content from database on selection of: ${media} with sorting on: ${sort}</h2>
-</br>
+<br>
+<h2>Showing content from database on selection of: ${media} with sorting on: ${genre}</h2>
+<br>
 
 <c:forEach items="${RESULT}" var="movie">
-	Movie name: ${movie.name}<br>
-	Year of release: ${movie.year}<br>	
-	Genre: ${movie.genre}<br>
+	Movie name: ${movie.id}<br>
+	Year of release: ${movie.title}<br>	
+	Genre: ${ genre }
 	-------------------------------------
 	<br>
 </c:forEach>

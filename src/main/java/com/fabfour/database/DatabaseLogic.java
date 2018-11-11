@@ -115,8 +115,10 @@ public class DatabaseLogic {
 	 *            genre
 	 * @return Handler object containing id and title
 	 */
-	public Handler getMovies(String genre) {
+	public List<Handler> getMovies(String genre) {
 
+		List<Handler> movies = new ArrayList<>();
+		
 		String id = null, title = null;
 
 		try {
@@ -126,13 +128,14 @@ public class DatabaseLogic {
 			while (rs.next()) {
 				id = rs.getString(1);
 				title = rs.getString(2);
+				movies.add( new Handler(id, title) );
 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return new Handler(id, title);
+		return movies;
 	}
 
 	/**
