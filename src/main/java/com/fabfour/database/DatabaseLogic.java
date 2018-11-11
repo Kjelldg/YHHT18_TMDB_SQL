@@ -13,6 +13,7 @@ public class DatabaseLogic {
 	// database.connectDatabase();
 	// database.setUp();
 
+	private API_parser parser;
 	private Connection con;
 	private String url;
 	private String databaseUsername;
@@ -43,6 +44,7 @@ public class DatabaseLogic {
 
 	/**
 	 * Creating necessary tables if they don't already exist
+	 * Adding content if tables are empty
 	 */
 	public void setUp() {
 		try {
@@ -55,6 +57,23 @@ public class DatabaseLogic {
 					"CREATE TABLE IF NOT EXISTS drama (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
 			statement.executeUpdate(
 					"CREATE TABLE IF NOT EXISTS sci-fi (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
+			
+			if (!statement.execute("SELECT * FROM thriller WHERE EXISTS (SELECT 1 FROM id);")) {
+				List<String> thriller = parser.getListOfMovies("53");
+				addMovies(thriller, "thriller");
+			}
+			if (!statement.execute("SELECT * FROM comedy WHERE EXISTS (SELECT 1 FROM id);")) {
+				List<String> comedy = parser.getListOfMovies("35");
+				addMovies(comedy, "comedy");
+			}
+			if (!statement.execute("SELECT * FROM drama WHERE EXISTS (SELECT 1 FROM id);")) {
+				List<String> drama = parser.getListOfMovies("18");
+				addMovies(drama, "drama");
+			}
+			if (!statement.execute("SELECT * FROM sci-fi WHERE EXISTS (SELECT 1 FROM id);")) {
+				List<String> scifi = parser.getListOfMovies("878");
+				addMovies(scifi, "sci-fi");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,7 +94,7 @@ public class DatabaseLogic {
 		for (String movie : movies) {
 			try {
 				PreparedStatement statement = con
-						.prepareStatement("INSERT INTO " + genre + " (idr, title) VALUES (?, ?)");
+						.prepareStatement("INSERT INTO " + genre + " (id, title) VALUES (?, ?)");
 				statement.setLong(1, id);
 				statement.setString(2, movie);
 

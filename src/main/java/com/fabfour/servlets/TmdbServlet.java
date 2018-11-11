@@ -60,6 +60,16 @@ public class TmdbServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		//TODO: setup dbLogic here
+		
+		try {
+			dbLogic = new DatabaseLogic("jdbc:postgresql://localhost:5432/postgres",
+			        "postgres",
+			        "[3`Td?9=");
+			dbLogic.setUp();
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
 	}
 
 	/**

@@ -29,7 +29,7 @@ public class API_parser {
 		String API_Key = "eecc8ae5b1c378032fe7a8ca2ce11da9";
 
 		Request request = new Request.Builder()
-				.url("https://api.themoviedb.org/3/discover/movie?api_key=" + API_Key + "&with_genres=" + genre + "&year=2010&language=en-US&page=1").get()
+				.url("https://api.themoviedb.org/3/discover/movie?api_key=" + API_Key + "&with_genres=" + genre + "&language=en-US&page=1").get()
 				.build();
 
 		try {
@@ -38,7 +38,6 @@ public class API_parser {
 			String responseData = response.body().string();
 			JSONObject jsonObject = new JSONObject(responseData);
 
-			// The array for all the popular movies on page 1.
 			JSONArray moviesArray = jsonObject.getJSONArray("results");
 			
 			movies = getMovies.get_Movie_Titles(moviesArray);
