@@ -11,7 +11,7 @@ Make your selections and enjoy that sweet sql in action
 <form action="TmdbServlet" method="post">
 <div align="left" id="movieOrSeries">
 	<select name="media">
-		<option value="movies">Movies</option>
+		<option value="movie">Movies</option>
 		<option value="series">Series</option>
 		<option value="both">Both</option>
 	</select>

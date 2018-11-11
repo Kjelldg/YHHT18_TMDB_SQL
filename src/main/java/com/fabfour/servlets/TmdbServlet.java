@@ -16,24 +16,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.fabfour.beans.DatabaseEntitiy;
+import com.fabfour.beans.Movie;
+import com.fabfour.database.DatabaseLogic;
 /**
  * Servlet implementation class TmdbServlet
  */
 public class TmdbServlet extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
+	private DatabaseLogic dbLogic;
+
 	public enum Media{
-		MOVIE,
-		SERIES,
-		BOTH
+		movie,
+		series,
+		both
 	}
 	
 	public enum Sorting{
-		TOP_RATED,
-		POPULAR,
-		UPCOMING
+		top_rated,
+		popular,
+		upcoming
 	}
 	
-	private static final long serialVersionUID = 1L;
+
 	
 	/**
 	 * Added for convenience @ src/main/webapp/Meta-Inf/context.xml
@@ -48,22 +53,36 @@ public class TmdbServlet extends HttpServlet {
      */
     public TmdbServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
+    
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		//TODO: setup dbLogic here
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Servlet looks what kind of media it should retrieve
-		Media whatMedia = Media.valueOf((String) request.getParameter("media"));
+		Media whatMedia = Media.valueOf( (String) request.getParameter("media"));
 		//What kind of sorting the servlet should do
-		Sorting whatSort = Sorting.valueOf((String) request.getParameter("sort"));
+		Sorting whatSort = Sorting.valueOf( (String) request.getParameter("sort"));
 
 		
-		//Get data here
-		List<DatabaseEntitiy> queryResult = getQuery(whatMedia, whatSort);
-		request.setAttribute("RESULT", queryResult);
+		//temp to test write to response page
+		List<Movie> test = new ArrayList<>();
+		Movie m1 = new Movie("Die hard", "1989", "Action");
+		Movie m2 = new Movie("Air Force One", "2001", "Romance");
+		test.add(m1);
+		test.add(m2);
+		
+		request.setAttribute("media", whatMedia.toString());
+		request.setAttribute("sort", whatSort.toString());
+		request.setAttribute("RESULT", test);
+
 		//when queries are completed and addedto request.setAttribute, redirect to response page
 		getServletContext().getRequestDispatcher("/responsepage.jsp").forward(request, response);
 
