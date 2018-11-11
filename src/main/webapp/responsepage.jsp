@@ -14,8 +14,8 @@
 <br>
 
 <c:forEach items="${RESULT}" var="movie">
-	Movie name: ${movie.id}<br>
-	Year of release: ${movie.title}<br>	
+	Movie id: ${movie.id}<br>
+	Movie title: ${movie.title}<br>	
 	Genre: ${ genre }
 	-------------------------------------
 	<br>
