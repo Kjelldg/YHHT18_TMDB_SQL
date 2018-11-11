@@ -13,7 +13,7 @@ public class Handler {
         return this.id;
     }
 	
-	public String title() {
+	public String getTitle() {
         return this.title;
     }
 
