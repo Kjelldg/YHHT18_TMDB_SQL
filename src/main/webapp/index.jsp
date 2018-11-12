@@ -20,7 +20,7 @@ Make your selections and enjoy that sweet sql in action
 		<option value="thriller">Thriller</option>
 		<option value="comedy">Comedy</option>
 		<option value="drama">Drama</option>
-		<option value="sci-fi">Sci-fi</option>
+		<option value="scifi">Sci-fi</option>
 	</select>
 </div>
 <br/>

@@ -39,24 +39,31 @@ public class TmdbServlet extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public TmdbServlet() {
-        super();
-        
+        super();		
     }
     
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		//TODO: setup dbLogic here
 		
 		try {
+			dbLogic = new DatabaseLogic(dataSource);
+			dbLogic.setUp();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		/*try {
 			dbLogic = new DatabaseLogic("jdbc:postgresql://localhost:5432/postgres",
 			        "postgres",
-			        "[3`Td?9=");
-			dbLogic.setUp();
+			        "postgres"); //[3`Td?9=
+
+			//dbLogic.setUp();
+			
 			
 		} catch (SQLException e) {
 			e.getMessage();
-		}
+		}*/
 	}
 
 	/**
@@ -67,8 +74,8 @@ public class TmdbServlet extends HttpServlet {
 		//Servlet checks what kind of media it should retrieve (always movies, currently)
 		String whatMedia = request.getParameter("media");
 		//What kind of genre selected
-		String whatGenre = request.getParameter("sort");
-
+		String whatGenre = request.getParameter("genre");
+		
 		//get a list of movies from the selected genre from the db
 		List<Handler> movies = dbLogic.getMovies(whatGenre);
 		

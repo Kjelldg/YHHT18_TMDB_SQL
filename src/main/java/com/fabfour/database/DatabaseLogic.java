@@ -3,6 +3,8 @@ package com.fabfour.database;
 import java.sql.*;
 import java.util.*;
 
+import javax.sql.DataSource;
+
 public class DatabaseLogic {
 
 	// THIS INFO IS NEEDED WHEN CONNECTING FROM SERVER!
@@ -18,13 +20,19 @@ public class DatabaseLogic {
 	private String url;
 	private String databaseUsername;
 	private String databasePassword;
+	private DataSource ds;
 
 	public DatabaseLogic(String url, String databaseUsername, String databasePassword) throws SQLException {
 		this.url = url;
 		this.databaseUsername = databaseUsername;
 		this.databasePassword = databasePassword;
 
-		connectDatabase();
+		//connectDatabase();
+	}
+	
+	public DatabaseLogic(DataSource dataSource) throws SQLException {
+		ds = dataSource;
+		parser = new API_parser();
 	}
 
 	public DatabaseLogic() {
@@ -38,7 +46,6 @@ public class DatabaseLogic {
 	 */
 	public void connectDatabase() throws SQLException {
 		con = DriverManager.getConnection(url, databaseUsername, databasePassword);
-
 		System.out.println("Connected to database.");
 	}
 
@@ -48,17 +55,32 @@ public class DatabaseLogic {
 	 */
 	public void setUp() {
 		try {
+			con = ds.getConnection();
 			Statement statement = con.createStatement();
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS thriller (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS comedy (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS drama (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS sci-fi (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL;");
 			
-			if (!statement.execute("SELECT * FROM thriller WHERE EXISTS (SELECT 1 FROM id);")) {
+			
+			statement.executeUpdate(
+					"CREATE TABLE IF NOT EXISTS thriller (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
+			statement.executeUpdate(
+					"CREATE TABLE IF NOT EXISTS comedy (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
+			statement.executeUpdate(
+					"CREATE TABLE IF NOT EXISTS drama (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
+			statement.executeUpdate(
+					"CREATE TABLE IF NOT EXISTS scifi (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
+			
+			List<String> thriller = parser.getListOfMovies("53");
+			addMovies(thriller, "thriller");
+			
+			List<String> comedy = parser.getListOfMovies("35");
+			addMovies(comedy, "comedy");
+			
+			List<String> drama = parser.getListOfMovies("18");
+			addMovies(drama, "drama");
+			
+			List<String> scifi = parser.getListOfMovies("878");
+			addMovies(scifi, "scifi");
+			
+			/*if (!statement.execute("SELECT * FROM thriller WHERE EXISTS (SELECT 1 FROM id);")) {
 				List<String> thriller = parser.getListOfMovies("53");
 				addMovies(thriller, "thriller");
 			}
@@ -72,8 +94,8 @@ public class DatabaseLogic {
 			}
 			if (!statement.execute("SELECT * FROM sci-fi WHERE EXISTS (SELECT 1 FROM id);")) {
 				List<String> scifi = parser.getListOfMovies("878");
-				addMovies(scifi, "sci-fi");
-			}
+				addMovies(scifi, "scifi");
+			}*/
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,14 +138,13 @@ public class DatabaseLogic {
 	 * @return Handler object containing id and title
 	 */
 	public List<Handler> getMovies(String genre) {
-
 		List<Handler> movies = new ArrayList<>();
 		
 		String id = null, title = null;
 
 		try {
-			PreparedStatement statement = con.prepareStatement("SELECT id, title FROM" + genre + ";");
-			ResultSet rs = statement.executeQuery();
+			Statement stmnt = con.createStatement();
+			ResultSet rs = stmnt.executeQuery("SELECT * FROM " + genre + " LIMIT 10;");
 
 			while (rs.next()) {
 				id = rs.getString(1);
