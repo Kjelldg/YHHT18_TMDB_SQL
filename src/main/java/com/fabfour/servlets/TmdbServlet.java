@@ -1,12 +1,8 @@
 package com.fabfour.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -15,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.fabfour.beans.DatabaseEntitiy;
-import com.fabfour.beans.Movie;
-import com.fabfour.database.DatabaseLogic;
-import com.fabfour.database.Handler;
+import com.fabfour.database.*;
 /**
  * Servlet implementation class TmdbServlet
  */
@@ -26,6 +19,7 @@ public class TmdbServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private DatabaseLogic dbLogic;
+	private List<Handler> movies;
 	
 	/**
 	 * Added for convenience @ src/main/webapp/Meta-Inf/context.xml
@@ -70,6 +64,7 @@ public class TmdbServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		movies = new ArrayList<>();
 		
 		//Servlet checks what kind of media it should retrieve (always movies, currently)
 		String whatMedia = request.getParameter("media");
@@ -77,7 +72,7 @@ public class TmdbServlet extends HttpServlet {
 		String whatGenre = request.getParameter("genre");
 		
 		//get a list of movies from the selected genre from the db
-		List<Handler> movies = dbLogic.getMovies(whatGenre);
+		movies = dbLogic.getMovies(whatGenre);
 		
 		//send list and other attributes to responsepage.jsp
 		request.setAttribute("RESULT", movies);

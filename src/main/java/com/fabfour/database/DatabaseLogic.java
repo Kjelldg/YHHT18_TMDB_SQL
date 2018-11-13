@@ -2,6 +2,7 @@ package com.fabfour.database;
 
 import java.sql.*;
 import java.util.*;
+import com.fabfour.database.Handler;
 
 import javax.sql.DataSource;
 
@@ -57,8 +58,7 @@ public class DatabaseLogic {
 		try {
 			con = ds.getConnection();
 			Statement statement = con.createStatement();
-			
-			
+	
 			statement.executeUpdate(
 					"CREATE TABLE IF NOT EXISTS thriller (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
 			statement.executeUpdate(
@@ -67,6 +67,7 @@ public class DatabaseLogic {
 					"CREATE TABLE IF NOT EXISTS drama (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
 			statement.executeUpdate(
 					"CREATE TABLE IF NOT EXISTS scifi (id VARCHAR(10) PRIMARY KEY NOT NULL, title VARCHAR(80) NOT NULL);");
+			
 			
 			List<String> thriller = parser.getListOfMovies("53");
 			addMovies(thriller, "thriller");
@@ -79,23 +80,6 @@ public class DatabaseLogic {
 			
 			List<String> scifi = parser.getListOfMovies("878");
 			addMovies(scifi, "scifi");
-			
-			/*if (!statement.execute("SELECT * FROM thriller WHERE EXISTS (SELECT 1 FROM id);")) {
-				List<String> thriller = parser.getListOfMovies("53");
-				addMovies(thriller, "thriller");
-			}
-			if (!statement.execute("SELECT * FROM comedy WHERE EXISTS (SELECT 1 FROM id);")) {
-				List<String> comedy = parser.getListOfMovies("35");
-				addMovies(comedy, "comedy");
-			}
-			if (!statement.execute("SELECT * FROM drama WHERE EXISTS (SELECT 1 FROM id);")) {
-				List<String> drama = parser.getListOfMovies("18");
-				addMovies(drama, "drama");
-			}
-			if (!statement.execute("SELECT * FROM sci-fi WHERE EXISTS (SELECT 1 FROM id);")) {
-				List<String> scifi = parser.getListOfMovies("878");
-				addMovies(scifi, "scifi");
-			}*/
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,7 +100,7 @@ public class DatabaseLogic {
 		for (String movie : movies) {
 			try {
 				PreparedStatement statement = con
-						.prepareStatement("INSERT INTO " + genre + " (id, title) VALUES (?, ?)");
+						.prepareStatement("INSERT INTO " + genre + " (id, title) VALUES (?, ?) ON CONFLICT (id) DO NOTHING;");
 				statement.setLong(1, id);
 				statement.setString(2, movie);
 
@@ -143,6 +127,7 @@ public class DatabaseLogic {
 		String id = null, title = null;
 
 		try {
+			
 			Statement stmnt = con.createStatement();
 			ResultSet rs = stmnt.executeQuery("SELECT * FROM " + genre + " LIMIT 10;");
 

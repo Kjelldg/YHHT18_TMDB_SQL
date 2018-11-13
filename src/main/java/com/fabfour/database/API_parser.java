@@ -12,6 +12,10 @@ import okhttp3.Response;
 
 public class API_parser {
 	
+	
+	public API_parser() {
+	}
+	
 	/**
 	 * Retrieve list of movies based on genre
 	 * 

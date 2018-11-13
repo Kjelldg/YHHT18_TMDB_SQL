@@ -9,6 +9,9 @@ public class Handler {
 		this.title = title;
 	}
 	
+	public Handler() {
+	}
+	
 	public String getId() {
         return this.id;
     }
